@@ -1,4 +1,13 @@
 # Starter pipeline
+name: ThreatModeler Pipeline
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
 - task: AzurePowerShell@5
   inputs:
     azureSubscription: 'Pay-As-You-Go(2130a450-f1b1-49d6-b805-2f37fc595e74)'
@@ -24,17 +33,7 @@
           Write-Output $response.data
       }
     errorActionPreference: 'continue'
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
-trigger:
-- master
-
-pool:
-  vmImage: ubuntu-latest
-
-steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
