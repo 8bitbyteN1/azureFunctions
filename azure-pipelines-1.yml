@@ -1,4 +1,29 @@
 # Starter pipeline
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'Pay-As-You-Go(2130a450-f1b1-49d6-b805-2f37fc595e74)'
+    ScriptType: 'InlineScript'
+    Inline: |
+      $url = "https://tmdev3.threatmodeler.us/api/integration/pipeline/validate"
+      $headers = @{
+          "accept" = "/"
+          "X-ThreatModeler-ApiKey" = "3G9lZsBvvYT6blmr5XCAo5SlsI60Y7k1yrg5DKyuxz4="
+          "Content-Type" = "application/json-patch+json"
+      }
+      $body = @{
+          projectGuids = @("f546971c-d853-40b2-afb7-13ed4fcf77a8","9c6d1c02-c183-4a21-89d2-ee7359661b61")
+          validateWithThreatRisk = $true
+      } | ConvertTo-Json
+      
+      $response = Invoke-RestMethod -Method Post -Uri $url -Headers $headers -Body $body
+      
+      if ($response.isSuccess) {
+          # Do something if successful
+      } else {
+          Write-Error $response.message
+          Write-Output $response.data
+      }
+    errorActionPreference: 'continue'
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
